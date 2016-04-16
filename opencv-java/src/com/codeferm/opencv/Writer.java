@@ -29,77 +29,77 @@ import org.opencv.videoio.Videoio;
  * @since 1.0.0
  */
 final class Writer {
-	/**
-	 * Logger.
-	 */
-	// CHECKSTYLE:OFF ConstantName - Logger is static final, not a constant
-	private static final Logger logger = Logger.getLogger(Writer.class // NOPMD
-			.getName());
+    /**
+     * Logger.
+     */
+    // CHECKSTYLE:OFF ConstantName - Logger is static final, not a constant
+    private static final Logger logger = Logger.getLogger(Writer.class // NOPMD
+            .getName());
 
-	// CHECKSTYLE:ON ConstantName
-	/* Load the OpenCV system library */
-	static {
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // NOPMD
-	}
+    // CHECKSTYLE:ON ConstantName
+    /* Load the OpenCV system library */
+    static {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // NOPMD
+    }
 
-	/**
-	 * Suppress default constructor for noninstantiability.
-	 */
-	private Writer() {
-		throw new AssertionError();
-	}
+    /**
+     * Suppress default constructor for noninstantiability.
+     */
+    private Writer() {
+        throw new AssertionError();
+    }
 
-	/**
-	 * Main method.
-	 *
-	 * args[0] = source file or will default to "../resources/traffic.mp4" if no
-	 * args passed.
-	 *
-	 * @param args
-	 *            Arguments passed.
-	 */
-	public static void main(final String[] args) {
-		String url = null;
-		final String outputFile = "../output/writer-java.avi";
-		// Check how many arguments were passed in
-		if (args.length == 0) {
-			// If no arguments were passed then default to
-			// ../resources/traffic.mp4
-			url = "../resources/traffic.mp4";
-		} else {
-			url = args[0];
-		}
-		// Custom logging properties via class loader
-		try {
-			LogManager.getLogManager()
-					.readConfiguration(Writer.class.getClassLoader().getResourceAsStream("logging.properties"));
-		} catch (SecurityException | IOException e) {
-			e.printStackTrace();
-		}
-		logger.log(Level.INFO, String.format("OpenCV %s", Core.VERSION));
-		logger.log(Level.INFO, String.format("Input file: %s", url));
-		logger.log(Level.INFO, String.format("Output file: %s", outputFile));
-		VideoCapture videoCapture = new VideoCapture(url);
-		final Size frameSize = new Size((int) videoCapture.get(Videoio.CAP_PROP_FRAME_WIDTH),
-				(int) videoCapture.get(Videoio.CAP_PROP_FRAME_HEIGHT));
-		logger.log(Level.INFO, String.format("Resolution: %s", frameSize));
-		final FourCC fourCC = new FourCC("X264");
-		VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(), videoCapture.get(Videoio.CAP_PROP_FPS),
-				frameSize, true);
-		final Mat mat = new Mat();
-		int frames = 0;
-		final long startTime = System.currentTimeMillis();
-		while (videoCapture.read(mat)) {
-			videoWriter.write(mat);
-			frames++;
-		}
-		final long estimatedTime = System.currentTimeMillis() - startTime;
-		final double seconds = (double) estimatedTime / 1000;
-		logger.log(Level.INFO, String.format("%d frames", frames));
-		logger.log(Level.INFO, String.format("%4.1f FPS, elapsed time: %4.2f seconds", frames / seconds, seconds));
-		// Release native memory
-		videoCapture.free();
-		videoWriter.free();
-		mat.free();
-	}
+    /**
+     * Main method.
+     *
+     * args[0] = source file or will default to "../resources/traffic.mp4" if no
+     * args passed.
+     *
+     * @param args
+     *            Arguments passed.
+     */
+    public static void main(final String[] args) {
+        String url = null;
+        final String outputFile = "../output/writer-java.avi";
+        // Check how many arguments were passed in
+        if (args.length == 0) {
+            // If no arguments were passed then default to
+            // ../resources/traffic.mp4
+            url = "../resources/traffic.mp4";
+        } else {
+            url = args[0];
+        }
+        // Custom logging properties via class loader
+        try {
+            LogManager.getLogManager()
+                    .readConfiguration(Writer.class.getClassLoader().getResourceAsStream("logging.properties"));
+        } catch (SecurityException | IOException e) {
+            e.printStackTrace();
+        }
+        logger.log(Level.INFO, String.format("OpenCV %s", Core.VERSION));
+        logger.log(Level.INFO, String.format("Input file: %s", url));
+        logger.log(Level.INFO, String.format("Output file: %s", outputFile));
+        VideoCapture videoCapture = new VideoCapture(url);
+        final Size frameSize = new Size((int) videoCapture.get(Videoio.CAP_PROP_FRAME_WIDTH),
+                (int) videoCapture.get(Videoio.CAP_PROP_FRAME_HEIGHT));
+        logger.log(Level.INFO, String.format("Resolution: %s", frameSize));
+        final FourCC fourCC = new FourCC("X264");
+        VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(), videoCapture.get(Videoio.CAP_PROP_FPS),
+                frameSize, true);
+        final Mat mat = new Mat();
+        int frames = 0;
+        final long startTime = System.currentTimeMillis();
+        while (videoCapture.read(mat)) {
+            videoWriter.write(mat);
+            frames++;
+        }
+        final long estimatedTime = System.currentTimeMillis() - startTime;
+        final double seconds = (double) estimatedTime / 1000;
+        logger.log(Level.INFO, String.format("%d frames", frames));
+        logger.log(Level.INFO, String.format("%4.1f FPS, elapsed time: %4.2f seconds", frames / seconds, seconds));
+        // Release native memory
+        videoCapture.free();
+        videoWriter.free();
+        mat.free();
+    }
 }

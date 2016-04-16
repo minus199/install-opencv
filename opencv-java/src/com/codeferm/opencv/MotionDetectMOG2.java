@@ -39,157 +39,157 @@ import org.opencv.videoio.Videoio;
  * @version 1.0.0
  * @since 1.0.0
  */
+@SuppressWarnings("checkstyle:magicnumber") // This is demo code, not worried
+                                            // about magic numbers
 final class MotionDetectMOG2 {
-	/**
-	 * Logger.
-	 */
-	// CHECKSTYLE:OFF - Logger is static final, not a constant
-	private static final Logger logger = Logger.getLogger(MotionDetectMOG2.class // NOPMD
-			.getName());
+    /**
+     * Logger.
+     */
+    @SuppressWarnings("checkstyle:constantname") // Logger is not a constant
+    private static final Logger logger = Logger.getLogger(MotionDetectMOG2.class // NOPMD
+            .getName());
+    /* Load the OpenCV system library */
+    static {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // NOPMD
+    }
 
-	// CHECKSTYLE:ON
-	/* Load the OpenCV system library */
-	static {
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // NOPMD
-	}
+    /**
+     * Kernel used for contours.
+     */
+    private static final Mat CONTOUR_KERNEL = Imgproc.getStructuringElement(Imgproc.MORPH_DILATE, new Size(3, 3),
+            new Point(1, 1));
+    /**
+     * Contour hierarchy.
+     */
+    private static final Mat HIERARCHY = new Mat();
+    /**
+     * Point used for contour dilate and erode.
+     */
+    private static final Point CONTOUR_POINT = new Point(-1, -1);
 
-	/**
-	 * Kernel used for contours.
-	 */
-	private static final Mat CONTOUR_KERNEL = Imgproc.getStructuringElement(Imgproc.MORPH_DILATE, new Size(3, 3),
-			new Point(1, 1));
-	/**
-	 * Contour hierarchy.
-	 */
-	private static final Mat HIERARCHY = new Mat();
-	/**
-	 * Point used for contour dilate and erode.
-	 */
-	private static final Point CONTOUR_POINT = new Point(-1, -1);
+    /**
+     * Suppress default constructor for noninstantiability.
+     */
+    private MotionDetectMOG2() {
+        throw new AssertionError();
+    }
 
-	/**
-	 * Suppress default constructor for noninstantiability.
-	 */
-	private MotionDetectMOG2() {
-		throw new AssertionError();
-	}
+    /**
+     * Get contours from image.
+     *
+     * @param source
+     *            Source image.
+     * @return List of rectangles.
+     */
+    public static List<Rect> contours(final Mat source) {
+        // CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
+        Imgproc.dilate(source, source, CONTOUR_KERNEL, CONTOUR_POINT, 15);
+        Imgproc.erode(source, source, CONTOUR_KERNEL, CONTOUR_POINT, 10);
+        // CHECKSTYLE:ON MagicNumber
+        final List<MatOfPoint> contoursList = new ArrayList<MatOfPoint>();
+        Imgproc.findContours(source, contoursList, HIERARCHY, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+        List<Rect> rectList = new ArrayList<Rect>();
+        // Convert MatOfPoint to Rectangles
+        for (MatOfPoint mop : contoursList) {
+            rectList.add(Imgproc.boundingRect(mop));
+            // Release native memory
+            mop.free();
+        }
+        return rectList;
+    }
 
-	/**
-	 * Get contours from image.
-	 *
-	 * @param source
-	 *            Source image.
-	 * @return List of rectangles.
-	 */
-	public static List<Rect> contours(final Mat source) {
-		// CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
-		Imgproc.dilate(source, source, CONTOUR_KERNEL, CONTOUR_POINT, 15);
-		Imgproc.erode(source, source, CONTOUR_KERNEL, CONTOUR_POINT, 10);
-		// CHECKSTYLE:ON MagicNumber
-		final List<MatOfPoint> contoursList = new ArrayList<MatOfPoint>();
-		Imgproc.findContours(source, contoursList, HIERARCHY, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
-		List<Rect> rectList = new ArrayList<Rect>();
-		// Convert MatOfPoint to Rectangles
-		for (MatOfPoint mop : contoursList) {
-			rectList.add(Imgproc.boundingRect(mop));
-			// Release native memory
-			mop.free();
-		}
-		return rectList;
-	}
-
-	/**
-	 * Mark frames with motion detected.
-	 *
-	 * args[0] = source file or will default to "../resources/traffic.mp4" if no
-	 * args passed.
-	 *
-	 * @param args
-	 *            String array of arguments.
-	 */
-	public static void main(final String[] args) {
-		String url = null;
-		final String outputFile = "../output/motion-detect-mog2-java.avi";
-		// Check how many arguments were passed in
-		if (args.length == 0) {
-			// If no arguments were passed then default to
-			// ../resources/traffic.mp4
-			url = "../resources/traffic.mp4";
-		} else {
-			url = args[0];
-		}
-		// Custom logging properties via class loader
-		try {
-			LogManager.getLogManager().readConfiguration(
-					MotionDetectMOG2.class.getClassLoader().getResourceAsStream("logging.properties"));
-		} catch (SecurityException | IOException e) {
-			e.printStackTrace();
-		}
-		logger.log(Level.INFO, String.format("OpenCV %s", Core.VERSION));
-		logger.log(Level.INFO, String.format("Input file: %s", url));
-		logger.log(Level.INFO, String.format("Output file: %s", outputFile));
-		VideoCapture videoCapture = new VideoCapture(url);
-		final Size frameSize = new Size((int) videoCapture.get(Videoio.CAP_PROP_FRAME_WIDTH),
-				(int) videoCapture.get(Videoio.CAP_PROP_FRAME_HEIGHT));
-		logger.log(Level.INFO, String.format("Resolution: %s", frameSize));
-		final FourCC fourCC = new FourCC("X264");
-		VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(), videoCapture.get(Videoio.CAP_PROP_FPS),
-				frameSize, true);
-		final BackgroundSubtractorMOG2 mog2 = Video.createBackgroundSubtractorMOG2(300, 32, true);
-		final Mat capture = new Mat();
-		final Mat foreground = new Mat();
-		final Mat blur = new Mat();
-		final Mat binaryImg = new Mat();
-		// Create a structuring element (SE)
-		final Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(7, 7), new Point(3, 3));
-		final Size kSize = new Size(4, 4);
-		final Point rectPoint1 = new Point();
-		final Point rectPoint2 = new Point();
-		final Scalar rectColor = new Scalar(0, 255, 0);
-		int frames = 0;
-		int framesWithMotion = 0;
-		final long startTime = System.currentTimeMillis();
-		// Process all frames in file
-		while (videoCapture.read(capture)) {
-			// Reduce noise with a kernel 4x4
-			Imgproc.blur(capture, blur, kSize);
-			// Update the background model
-			mog2.apply(blur, foreground, -1);
-			// Apply the close morphology operation
-			Imgproc.morphologyEx(foreground, binaryImg, Imgproc.MORPH_CLOSE, element);
-			// Convert to BW
-			Imgproc.threshold(binaryImg, binaryImg, 128, 255, Imgproc.THRESH_BINARY);
-			List<Rect> movementLocations = contours(binaryImg);
-			// Contours trigger motion
-			if (movementLocations.size() > 0) {
-				framesWithMotion++;
-				for (Rect rect : movementLocations) {
-					// Filter out smaller blobs
-					if (rect.width > 30 && rect.height > 30) {
-						rectPoint1.x = rect.x;
-						rectPoint1.y = rect.y;
-						rectPoint2.x = rect.x + rect.width;
-						rectPoint2.y = rect.y + rect.height;
-						// Draw rectangle around fond object
-						Imgproc.rectangle(capture, rectPoint1, rectPoint2, rectColor, 2);
-					}
-				}
-			}
-			videoWriter.write(capture);
-			frames++;
-		}
-		final long estimatedTime = System.currentTimeMillis() - startTime;
-		final double seconds = (double) estimatedTime / 1000;
-		logger.log(Level.INFO, String.format("%d frames, %d frames with motion", frames, framesWithMotion));
-		logger.log(Level.INFO, String.format("%4.1f FPS, elapsed time: %4.2f seconds", frames / seconds, seconds));
-		// Free native memory
-		videoCapture.free();
-		videoWriter.free();
-		mog2.free();
-		capture.free();
-		foreground.free();
-		blur.free();
-		binaryImg.free();
-		element.free();
-	}
+    /**
+     * Mark frames with motion detected.
+     *
+     * args[0] = source file or will default to "../resources/traffic.mp4" if no
+     * args passed.
+     *
+     * @param args
+     *            String array of arguments.
+     */
+    public static void main(final String[] args) {
+        String url = null;
+        final String outputFile = "../output/motion-detect-mog2-java.avi";
+        // Check how many arguments were passed in
+        if (args.length == 0) {
+            // If no arguments were passed then default to
+            // ../resources/traffic.mp4
+            url = "../resources/traffic.mp4";
+        } else {
+            url = args[0];
+        }
+        // Custom logging properties via class loader
+        try {
+            LogManager.getLogManager().readConfiguration(
+                    MotionDetectMOG2.class.getClassLoader().getResourceAsStream("logging.properties"));
+        } catch (SecurityException | IOException e) {
+            e.printStackTrace();
+        }
+        logger.log(Level.INFO, String.format("OpenCV %s", Core.VERSION));
+        logger.log(Level.INFO, String.format("Input file: %s", url));
+        logger.log(Level.INFO, String.format("Output file: %s", outputFile));
+        VideoCapture videoCapture = new VideoCapture(url);
+        final Size frameSize = new Size((int) videoCapture.get(Videoio.CAP_PROP_FRAME_WIDTH),
+                (int) videoCapture.get(Videoio.CAP_PROP_FRAME_HEIGHT));
+        logger.log(Level.INFO, String.format("Resolution: %s", frameSize));
+        final FourCC fourCC = new FourCC("X264");
+        VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(), videoCapture.get(Videoio.CAP_PROP_FPS),
+                frameSize, true);
+        final BackgroundSubtractorMOG2 mog2 = Video.createBackgroundSubtractorMOG2(300, 32, true);
+        final Mat capture = new Mat();
+        final Mat foreground = new Mat();
+        final Mat blur = new Mat();
+        final Mat binaryImg = new Mat();
+        // Create a structuring element (SE)
+        final Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(7, 7), new Point(3, 3));
+        final Size kSize = new Size(4, 4);
+        final Point rectPoint1 = new Point();
+        final Point rectPoint2 = new Point();
+        final Scalar rectColor = new Scalar(0, 255, 0);
+        int frames = 0;
+        int framesWithMotion = 0;
+        final long startTime = System.currentTimeMillis();
+        // Process all frames in file
+        while (videoCapture.read(capture)) {
+            // Reduce noise with a kernel 4x4
+            Imgproc.blur(capture, blur, kSize);
+            // Update the background model
+            mog2.apply(blur, foreground, -1);
+            // Apply the close morphology operation
+            Imgproc.morphologyEx(foreground, binaryImg, Imgproc.MORPH_CLOSE, element);
+            // Convert to BW
+            Imgproc.threshold(binaryImg, binaryImg, 128, 255, Imgproc.THRESH_BINARY);
+            List<Rect> movementLocations = contours(binaryImg);
+            // Contours trigger motion
+            if (movementLocations.size() > 0) {
+                framesWithMotion++;
+                for (Rect rect : movementLocations) {
+                    // Filter out smaller blobs
+                    if (rect.width > 30 && rect.height > 30) {
+                        rectPoint1.x = rect.x;
+                        rectPoint1.y = rect.y;
+                        rectPoint2.x = rect.x + rect.width;
+                        rectPoint2.y = rect.y + rect.height;
+                        // Draw rectangle around fond object
+                        Imgproc.rectangle(capture, rectPoint1, rectPoint2, rectColor, 2);
+                    }
+                }
+            }
+            videoWriter.write(capture);
+            frames++;
+        }
+        final long estimatedTime = System.currentTimeMillis() - startTime;
+        final double seconds = (double) estimatedTime / 1000;
+        logger.log(Level.INFO, String.format("%d frames, %d frames with motion", frames, framesWithMotion));
+        logger.log(Level.INFO, String.format("%4.1f FPS, elapsed time: %4.2f seconds", frames / seconds, seconds));
+        // Free native memory
+        videoCapture.free();
+        videoWriter.free();
+        mog2.free();
+        capture.free();
+        foreground.free();
+        blur.free();
+        binaryImg.free();
+        element.free();
+    }
 }

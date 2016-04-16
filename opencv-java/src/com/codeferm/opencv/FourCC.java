@@ -29,25 +29,23 @@ final class FourCC {
      * @param fourcc
      *            FourCC String.
      */
-    public FourCC(final String fourcc) {
+    FourCC(final String fourcc) {
         if (fourcc == null) {
             throw new NullPointerException("FourCC cannot be null");
         }
         // CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
         if (fourcc.length() != 4) {
-            throw new IllegalArgumentException(
-                    "FourCC must be four characters long");
+            throw new IllegalArgumentException("FourCC must be four characters long");
         }
         for (char c : fourcc.toCharArray()) {
             if (c < 32 || c > 126) {
-                throw new IllegalArgumentException(
-                        "FourCC must be ASCII printable");
+                throw new IllegalArgumentException("FourCC must be ASCII printable");
             }
         }
         int val = 0;
         for (int i = 0; i < 4; i++) {
             val <<= 8;
-            val |= fourcc.charAt(3-i);
+            val |= fourcc.charAt(3 - i);
         }
         // CHECKSTYLE:ON MagicNumber
         this.value = val;
