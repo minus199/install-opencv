@@ -58,13 +58,17 @@ import org.opencv.imgproc.Imgproc;
  * @version 1.0.0
  * @since 1.0.0
  */
-@SuppressWarnings("checkstyle:magicnumber") // This is demo code, not worried
-                                            // about magic numbers
+// This is demo code, not worried about magic numbers, etc.
+@SuppressWarnings({ "checkstyle:magicnumber", "PMD.LawOfDemeter", "PMD.AvoidLiteralsInIfCondition",
+        "PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidUsingNativeCode", "PMD.AvoidFinalLocalVariable",
+        "PMD.CommentSize", "PMD.AvoidPrintStackTrace", "PMD.UseProperClassLoader", "PMD.AvoidPrefixingMethodParameters",
+        "PMD.DataflowAnomalyAnalysis" })
 final class CameraCalibration {
     /**
      * Logger.
      */
-    @SuppressWarnings("checkstyle:constantname") // Logger is not a constant
+    // Logger is not a constant
+    @SuppressWarnings({ "checkstyle:constantname", "PMD.VariableNamingConventions" })
     private static final Logger logger = Logger.getLogger(CameraCalibration.class.getName());
     /**
      * Set the criteria for the cornerSubPix algorithm.
@@ -110,14 +114,14 @@ final class CameraCalibration {
     public MatOfPoint3f getCorner3f(final Size patternSize) {
         final MatOfPoint3f corners3f = new MatOfPoint3f();
         final double squareSize = 50;
-        final Point3[] vp = new Point3[(int) (patternSize.height * patternSize.width)];
+        final Point3[] point3 = new Point3[(int) (patternSize.height * patternSize.width)];
         int cnt = 0;
         for (int i = 0; i < patternSize.height; ++i) {
             for (int j = 0; j < patternSize.width; ++j, cnt++) {
-                vp[cnt] = new Point3(j * squareSize, i * squareSize, 0.0d);
+                point3[cnt] = new Point3(j * squareSize, i * squareSize, 0.0d);
             }
         }
-        corners3f.fromArray(vp);
+        corners3f.fromArray(point3);
         return corners3f;
     }
 
@@ -144,17 +148,17 @@ final class CameraCalibration {
         double totalError = 0;
         double totalPoints = 0;
         final MatOfPoint2f cornersProjected = new MatOfPoint2f();
-        final MatOfDouble distortionCoefficients = new MatOfDouble(distCoeffs);
+        final MatOfDouble distCoefficients = new MatOfDouble(distCoeffs);
         for (int i = 0; i < objectPoints.size(); i++) {
             Calib3d.projectPoints((MatOfPoint3f) objectPoints.get(i), rVecs.get(i), tVecs.get(i), cameraMatrix,
-                    distortionCoefficients, cornersProjected);
+                    distCoefficients, cornersProjected);
             final double error = Core.norm(imagePoints.get(i), cornersProjected, Core.NORM_L2);
-            final int n = objectPoints.get(i).rows();
+            final int rows = objectPoints.get(i).rows();
             totalError += error * error;
-            totalPoints += n;
+            totalPoints += rows;
         }
         cornersProjected.free();
-        distortionCoefficients.free();
+        distCoefficients.free();
         return Math.sqrt(totalError / totalPoints);
     }
 
@@ -259,11 +263,11 @@ final class CameraCalibration {
         logger.log(Level.FINE, String.format("Loading double Mat: %s", fileName));
         final long count = mat.total() * mat.channels();
         final List<Double> list = new ArrayList<>();
-        try (final DataInputStream in = new DataInputStream(new FileInputStream(fileName))) {
+        try (final DataInputStream inStream = new DataInputStream(new FileInputStream(fileName))) {
             // Read all Doubles into List
             for (int i = 0; i < count; ++i) {
                 logger.log(Level.FINE, String.format("%d", i));
-                list.add(in.readDouble());
+                list.add(inStream.readDouble());
             }
         } catch (IOException e) {
             if (e.getMessage() == null) {
@@ -355,6 +359,8 @@ final class CameraCalibration {
         final File parentFile = new File(file.getParent());
         // Make it canonical
         final Path dir = Paths.get(parentFile.getCanonicalPath());
+        final Size winSize = new Size(5, 5);
+        final Size zoneSize = new Size(-1, -1);
         try (final DirectoryStream<Path> stream = Files.newDirectoryStream(dir, file.getName())) {
             int passed = 0;
             for (final Path entry : stream) {
@@ -362,8 +368,6 @@ final class CameraCalibration {
                 // Read in image as gray scale
                 final Mat mat = Imgcodecs.imread(fileName, Imgcodecs.CV_LOAD_IMAGE_GRAYSCALE);
                 final MatOfPoint2f corners = new MatOfPoint2f();
-                final Size winSize = new Size(5, 5);
-                final Size zoneSize = new Size(-1, -1);
                 // Process only images that pass getCorners
                 if (getCorners(mat, patternSize, winSize, zoneSize, corners)) {
                     logger.log(Level.FINE, String.format("Chessboard found in: %s", fileName));
@@ -401,11 +405,11 @@ final class CameraCalibration {
             params[1].free();
             corners3f.free();
             // Clean up imagePoints
-            for (Mat imagePoint : imagePoints) {
+            for (final Mat imagePoint : imagePoints) {
                 imagePoint.free();
             }
             // Clean up images
-            for (Mat image : images) {
+            for (final Mat image : images) {
                 image.free();
             }
         } catch (IOException e) {
@@ -422,7 +426,7 @@ final class CameraCalibration {
      * @throws IOException
      *             Possible exception.
      */
-    public static void main(final String[] args) throws IOException {
+    public static void main(final String... args) throws IOException {
         String inMask = null;
         String outDir = null;
         Size patternSize = null;
@@ -449,7 +453,7 @@ final class CameraCalibration {
         logger.log(Level.INFO, String.format("OpenCV %s", Core.VERSION));
         logger.log(Level.INFO, String.format("Input mask: %s", inMask));
         logger.log(Level.INFO, String.format("Output dir: %s", outDir));
-        CameraCalibration cameraCalibration = new CameraCalibration();
+        final CameraCalibration cameraCalibration = new CameraCalibration();
         logger.log(Level.INFO, "Calibrate camera from files");
         final long startTime = System.currentTimeMillis();
         cameraCalibration.getPoints(inMask, outDir, patternSize);
@@ -466,8 +470,6 @@ final class CameraCalibration {
         calibrateArr[1].free();
         final long estimatedTime = System.currentTimeMillis() - startTime;
         final double seconds = (double) estimatedTime / 1000;
-        // CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
         logger.log(Level.INFO, String.format("Elapsed time: %4.2f seconds", seconds));
-        // CHECKSTYLE:ON MagicNumber
     }
 }

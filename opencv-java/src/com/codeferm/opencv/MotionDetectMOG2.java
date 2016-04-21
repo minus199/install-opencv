@@ -82,10 +82,8 @@ final class MotionDetectMOG2 {
      * @return List of rectangles.
      */
     public static List<Rect> contours(final Mat source) {
-        // CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
         Imgproc.dilate(source, source, CONTOUR_KERNEL, CONTOUR_POINT, 15);
         Imgproc.erode(source, source, CONTOUR_KERNEL, CONTOUR_POINT, 10);
-        // CHECKSTYLE:ON MagicNumber
         final List<MatOfPoint> contoursList = new ArrayList<MatOfPoint>();
         Imgproc.findContours(source, contoursList, HIERARCHY, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
         List<Rect> rectList = new ArrayList<Rect>();

@@ -30,8 +30,10 @@ import org.opencv.imgproc.Imgproc;
  * @version 1.0.0
  * @since 1.0.0
  */
-@SuppressWarnings("checkstyle:magicnumber") // This is demo code, not worried
-                                            // about magic numbers
+@SuppressWarnings({ "checkstyle:magicnumber", "PMD.LawOfDemeter", "PMD.AvoidLiteralsInIfCondition",
+        "PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidUsingNativeCode", "PMD.AvoidFinalLocalVariable",
+        "PMD.CommentSize", "PMD.AvoidPrintStackTrace", "PMD.UseProperClassLoader", "PMD.AvoidPrefixingMethodParameters",
+        "PMD.DataflowAnomalyAnalysis" })
 final class Drawing {
     /**
      * Logger.
@@ -60,7 +62,7 @@ final class Drawing {
      * @param args
      *            Arguments passed.
      */
-    public static void main(final String[] args) {
+    public static void main(final String... args) {
         String outputFile = null;
         // Check how many arguments were passed in
         if (args.length == 0) {

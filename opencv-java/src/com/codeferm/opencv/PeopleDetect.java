@@ -41,11 +41,8 @@ final class PeopleDetect {
     /**
      * Logger.
      */
-    // CHECKSTYLE:OFF ConstantName - Logger is static final, not a constant
     private static final Logger logger = Logger.getLogger(PeopleDetect.class // NOPMD
             .getName());
-
-    // CHECKSTYLE:ON ConstantName
     /* Load the OpenCV system library */
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // NOPMD
@@ -114,9 +111,7 @@ final class PeopleDetect {
         final Scalar fontColor = new Scalar(255, 255, 255);
         final long startTime = System.currentTimeMillis();
         while (videoCapture.read(mat)) {
-            // CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
             hog.detectMultiScale(mat, foundLocations, foundWeights, 0.0, winStride, padding, 1.05, 2.0, false);
-            // CHECKSTYLE:ON MagicNumber
             if (foundLocations.rows() > 0) {
                 framesWithPeople++;
                 List<Double> weightList = foundWeights.toList();
@@ -130,16 +125,12 @@ final class PeopleDetect {
                     // Draw rectangle around fond object
                     Imgproc.rectangle(mat, rectPoint1, rectPoint2, rectColor, 2);
                     fontPoint.x = rect.x;
-                    // CHECKSTYLE:OFF MagicNumber - Magic numbers here for
                     // illustration
                     fontPoint.y = rect.y - 4;
-                    // CHECKSTYLE:ON MagicNumber
                     // Print weight
-                    // CHECKSTYLE:OFF MagicNumber - Magic numbers here for
                     // illustration
                     Imgproc.putText(mat, String.format("%1.2f", weightList.get(i)), fontPoint, Core.FONT_HERSHEY_PLAIN,
                             1.5, fontColor, 2, Core.LINE_AA, false);
-                    // CHECKSTYLE:ON MagicNumber
                     i++;
                 }
             }

@@ -32,11 +32,8 @@ final class Writer {
     /**
      * Logger.
      */
-    // CHECKSTYLE:OFF ConstantName - Logger is static final, not a constant
     private static final Logger logger = Logger.getLogger(Writer.class // NOPMD
             .getName());
-
-    // CHECKSTYLE:ON ConstantName
     /* Load the OpenCV system library */
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // NOPMD

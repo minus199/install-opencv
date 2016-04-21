@@ -41,7 +41,7 @@ public class KeyEventFrame extends Frame implements AWTEventListener {
     @Override
     public final void eventDispatched(final AWTEvent event) {
         if (event instanceof KeyEvent) {
-            KeyEvent key = (KeyEvent) event;
+            final KeyEvent key = (KeyEvent) event;
             // Handle key presses
             if (key.getID() == KeyEvent.KEY_PRESSED) {
                 // Exit if escape pressed

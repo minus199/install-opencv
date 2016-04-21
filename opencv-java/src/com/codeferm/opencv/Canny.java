@@ -29,14 +29,18 @@ import org.opencv.videoio.Videoio;
  * @version 1.0.0
  * @since 1.0.0
  */
+// This is demo code, not worried about magic numbers, etc.
+@SuppressWarnings({ "checkstyle:magicnumber", "PMD.LawOfDemeter", "PMD.AvoidLiteralsInIfCondition",
+        "PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidUsingNativeCode", "PMD.AvoidFinalLocalVariable",
+        "PMD.CommentSize", "PMD.AvoidPrintStackTrace", "PMD.UseProperClassLoader", "PMD.AvoidPrefixingMethodParameters",
+        "PMD.DataflowAnomalyAnalysis" })
 final class Canny {
     /**
      * Logger.
      */
-    // CHECKSTYLE:OFF ConstantName - Logger is static final, not a constant
+    // Logger is not a constant
+    @SuppressWarnings({ "checkstyle:constantname", "PMD.VariableNamingConventions" })
     private static final Logger logger = Logger.getLogger(Canny.class.getName());
-
-    // CHECKSTYLE:ON ConstantName
     /* Load the OpenCV system library */
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -58,7 +62,7 @@ final class Canny {
      * @param args
      *            String array of arguments.
      */
-    public static void main(final String[] args) {
+    public static void main(final String... args) {
         String url = null;
         final String outputFile = "../output/canny-java.avi";
         // Check how many arguments were passed in
@@ -79,13 +83,13 @@ final class Canny {
         logger.log(Level.INFO, String.format("OpenCV %s", Core.VERSION));
         logger.log(Level.INFO, String.format("Input file: %s", url));
         logger.log(Level.INFO, String.format("Output file: %s", outputFile));
-        VideoCapture videoCapture = new VideoCapture(url);
+        final VideoCapture videoCapture = new VideoCapture(url);
         final Size frameSize = new Size((int) videoCapture.get(Videoio.CAP_PROP_FRAME_WIDTH),
                 (int) videoCapture.get(Videoio.CAP_PROP_FRAME_HEIGHT));
         logger.log(Level.INFO, String.format("Resolution: %s", frameSize));
         final FourCC fourCC = new FourCC("X264");
-        VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(), videoCapture.get(Videoio.CAP_PROP_FPS),
-                frameSize, true);
+        final VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(),
+                videoCapture.get(Videoio.CAP_PROP_FPS), frameSize, true);
         final Mat mat = new Mat();
         int frames = 0;
         final Mat gray = new Mat();
@@ -100,9 +104,7 @@ final class Canny {
             // Reduce noise with a kernel 3x3
             Imgproc.GaussianBlur(gray, blur, kSize, 0);
             // Canny detector
-            // CHECKSTYLE:OFF MagicNumber - Magic numbers here for illustration
             Imgproc.Canny(blur, edges, 100, 200, 3, false);
-            // CHECKSTYLE:ON MagicNumber
             // Add some colors to edges from original image
             Core.bitwise_and(mat, mat, dst, edges);
             videoWriter.write(dst);

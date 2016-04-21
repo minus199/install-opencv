@@ -33,6 +33,11 @@ import org.opencv.videoio.Videoio;
  * @version 1.0.0
  * @since 1.0.0
  */
+// This is demo code, not worried about magic numbers, etc.
+@SuppressWarnings({ "checkstyle:magicnumber", "PMD.LawOfDemeter", "PMD.AvoidLiteralsInIfCondition",
+        "PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidUsingNativeCode", "PMD.AvoidFinalLocalVariable",
+        "PMD.CommentSize", "PMD.AvoidPrintStackTrace", "PMD.UseProperClassLoader", "PMD.AvoidPrefixingMethodParameters",
+        "PMD.DataflowAnomalyAnalysis" })
 final class CaptureUI extends Applet implements Runnable { // NOPMD
     /**
      * Serializable class version number.
@@ -41,10 +46,10 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
     /**
      * Logger.
      */
-    // CHECKSTYLE:OFF ConstantName - Logger is static final, not a constant
+    // Logger is not a constant
+    @SuppressWarnings({ "checkstyle:constantname", "PMD.VariableNamingConventions" })
     private static final Logger logger = Logger.getLogger(CaptureUI.class // NOPMD
             .getName());
-    // CHECKSTYLE:ON ConstantName
     /**
      * Mat for image capture.
      */
@@ -56,7 +61,7 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
     /**
      * Frame size.
      */
-    private transient Size frameSize;
+    private final transient Size frameSize;
     /**
      * Applet drawing canvas.
      */
@@ -64,6 +69,7 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
     /**
      * Processing thread.
      */
+    @SuppressWarnings("PMD.DoNotUseThreads")
     private transient Thread captureThread;
 
     /* Load the OpenCV system library */
@@ -78,6 +84,7 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
      *            Camera URL.
      */
     CaptureUI(final String url) {
+        super();
         // See if URL is an integer: -? = negative sign, could have none or one,
         // \\d+ = one or more digits
         if (url.matches("-?\\d+")) {
@@ -139,6 +146,7 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
     /**
      * Create frame acquisition thread and start.
      */
+    @SuppressWarnings("PMD.DoNotUseThreads")
     @Override
     public void start() {
         if (captureThread == null) {
@@ -150,6 +158,7 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
     /**
      * Stop frame acquisition thread.
      */
+    @SuppressWarnings("PMD.NullAssignment")
     @Override
     public void stop() {
         if (captureThread != null) {
@@ -193,18 +202,24 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
      *            Mat array.
      */
     public void convert(final Mat mat) {
-        byte[] sourcePixels = new byte[mat.width() * mat.height() * mat.channels()];
+        final byte[] sourcePixels = new byte[mat.width() * mat.height() * mat.channels()];
         mat.get(0, 0, sourcePixels);
         // Create new image and get reference to backing data
         bufferedImage = new BufferedImage(mat.width(), mat.height(), BufferedImage.TYPE_3BYTE_BGR);
-        byte[] targetPixels = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
+        final byte[] targetPixels = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
         // Fast copy
         System.arraycopy(sourcePixels, 0, targetPixels, 0, sourcePixels.length);
     }
 
+    /**
+     * Update image.
+     *
+     * @see java.awt.Container#update(java.awt.Graphics)
+     */
+    @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
     @Override
-    public synchronized void update(final Graphics g) {
-        g.drawImage(bufferedImage, 0, 0, this);
+    public synchronized void update(final Graphics graphics) {
+        graphics.drawImage(bufferedImage, 0, 0, this);
     }
 
     /**
@@ -215,7 +230,7 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
      * @param args
      *            String array of arguments.
      */
-    public static void main(final String[] args) {
+    public static void main(final String... args) {
         String url = null;
         // Check how many arguments were passed in
         if (args.length == 0) {
@@ -224,14 +239,18 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
         } else {
             url = args[0];
         }
-        CaptureUI window = new CaptureUI(url);
+        final CaptureUI window = new CaptureUI(url);
         // Deal with VideoCapture always returning True otherwise it will hang
         // on VideoCapture.read()
         if (window.frameSize.width > 0 && window.frameSize.height > 0) {
-            KeyEventFrame frame = new KeyEventFrame();
+            final KeyEventFrame frame = new KeyEventFrame();
             frame.addWindowListener(new WindowAdapter() {
+                /**
+                 * @see java.awt.event.WindowAdapter#windowClosing(java.awt.event.WindowEvent)
+                 */
+                @SuppressWarnings("PMD.DoNotCallSystemExit")
                 @Override
-                public void windowClosing(final WindowEvent e) {
+                public void windowClosing(final WindowEvent event) {
                     System.exit(0);
                 }
             });
