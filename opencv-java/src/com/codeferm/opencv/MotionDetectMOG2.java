@@ -39,18 +39,21 @@ import org.opencv.videoio.Videoio;
  * @version 1.0.0
  * @since 1.0.0
  */
-@SuppressWarnings("checkstyle:magicnumber") // This is demo code, not worried
-                                            // about magic numbers
+// This is demo code, not worried about magic numbers, etc.
+@SuppressWarnings({ "checkstyle:magicnumber", "PMD.LawOfDemeter", "PMD.AvoidLiteralsInIfCondition",
+        "PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidUsingNativeCode", "PMD.AvoidFinalLocalVariable",
+        "PMD.CommentSize", "PMD.AvoidPrintStackTrace", "PMD.UseProperClassLoader", "PMD.AvoidPrefixingMethodParameters",
+        "PMD.DataflowAnomalyAnalysis" })
 final class MotionDetectMOG2 {
     /**
      * Logger.
      */
-    @SuppressWarnings("checkstyle:constantname") // Logger is not a constant
-    private static final Logger logger = Logger.getLogger(MotionDetectMOG2.class // NOPMD
-            .getName());
+    // Logger is not a constant
+    @SuppressWarnings({ "checkstyle:constantname", "PMD.VariableNamingConventions" })
+    private static final Logger logger = Logger.getLogger(MotionDetectMOG2.class.getName());
     /* Load the OpenCV system library */
     static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // NOPMD
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
     /**
@@ -86,9 +89,9 @@ final class MotionDetectMOG2 {
         Imgproc.erode(source, source, CONTOUR_KERNEL, CONTOUR_POINT, 10);
         final List<MatOfPoint> contoursList = new ArrayList<MatOfPoint>();
         Imgproc.findContours(source, contoursList, HIERARCHY, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
-        List<Rect> rectList = new ArrayList<Rect>();
+        final List<Rect> rectList = new ArrayList<Rect>();
         // Convert MatOfPoint to Rectangles
-        for (MatOfPoint mop : contoursList) {
+        for (final MatOfPoint mop : contoursList) {
             rectList.add(Imgproc.boundingRect(mop));
             // Release native memory
             mop.free();
@@ -105,7 +108,7 @@ final class MotionDetectMOG2 {
      * @param args
      *            String array of arguments.
      */
-    public static void main(final String[] args) {
+    public static void main(final String... args) {
         String url = null;
         final String outputFile = "../output/motion-detect-mog2-java.avi";
         // Check how many arguments were passed in
@@ -126,13 +129,13 @@ final class MotionDetectMOG2 {
         logger.log(Level.INFO, String.format("OpenCV %s", Core.VERSION));
         logger.log(Level.INFO, String.format("Input file: %s", url));
         logger.log(Level.INFO, String.format("Output file: %s", outputFile));
-        VideoCapture videoCapture = new VideoCapture(url);
+        final VideoCapture videoCapture = new VideoCapture(url);
         final Size frameSize = new Size((int) videoCapture.get(Videoio.CAP_PROP_FRAME_WIDTH),
                 (int) videoCapture.get(Videoio.CAP_PROP_FRAME_HEIGHT));
         logger.log(Level.INFO, String.format("Resolution: %s", frameSize));
         final FourCC fourCC = new FourCC("X264");
-        VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(), videoCapture.get(Videoio.CAP_PROP_FPS),
-                frameSize, true);
+        final VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(),
+                videoCapture.get(Videoio.CAP_PROP_FPS), frameSize, true);
         final BackgroundSubtractorMOG2 mog2 = Video.createBackgroundSubtractorMOG2(300, 32, true);
         final Mat capture = new Mat();
         final Mat foreground = new Mat();
@@ -157,11 +160,11 @@ final class MotionDetectMOG2 {
             Imgproc.morphologyEx(foreground, binaryImg, Imgproc.MORPH_CLOSE, element);
             // Convert to BW
             Imgproc.threshold(binaryImg, binaryImg, 128, 255, Imgproc.THRESH_BINARY);
-            List<Rect> movementLocations = contours(binaryImg);
+            final List<Rect> movementLocations = contours(binaryImg);
             // Contours trigger motion
-            if (movementLocations.size() > 0) {
+            if (!movementLocations.isEmpty()) {
                 framesWithMotion++;
-                for (Rect rect : movementLocations) {
+                for (final Rect rect : movementLocations) {
                     // Filter out smaller blobs
                     if (rect.width > 30 && rect.height > 30) {
                         rectPoint1.x = rect.x;

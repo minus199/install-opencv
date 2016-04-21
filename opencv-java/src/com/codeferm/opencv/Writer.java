@@ -28,15 +28,21 @@ import org.opencv.videoio.Videoio;
  * @version 1.0.0
  * @since 1.0.0
  */
+// This is demo code, not worried about magic numbers, etc.
+@SuppressWarnings({ "checkstyle:magicnumber", "PMD.LawOfDemeter", "PMD.AvoidLiteralsInIfCondition",
+        "PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidUsingNativeCode", "PMD.AvoidFinalLocalVariable",
+        "PMD.CommentSize", "PMD.AvoidPrintStackTrace", "PMD.UseProperClassLoader", "PMD.AvoidPrefixingMethodParameters",
+        "PMD.DataflowAnomalyAnalysis" })
 final class Writer {
     /**
      * Logger.
      */
-    private static final Logger logger = Logger.getLogger(Writer.class // NOPMD
-            .getName());
+    // Logger is not a constant
+    @SuppressWarnings({ "checkstyle:constantname", "PMD.VariableNamingConventions" })
+    private static final Logger logger = Logger.getLogger(Writer.class.getName());
     /* Load the OpenCV system library */
     static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // NOPMD
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
     /**
@@ -55,7 +61,7 @@ final class Writer {
      * @param args
      *            Arguments passed.
      */
-    public static void main(final String[] args) {
+    public static void main(final String... args) {
         String url = null;
         final String outputFile = "../output/writer-java.avi";
         // Check how many arguments were passed in
@@ -76,13 +82,13 @@ final class Writer {
         logger.log(Level.INFO, String.format("OpenCV %s", Core.VERSION));
         logger.log(Level.INFO, String.format("Input file: %s", url));
         logger.log(Level.INFO, String.format("Output file: %s", outputFile));
-        VideoCapture videoCapture = new VideoCapture(url);
+        final VideoCapture videoCapture = new VideoCapture(url);
         final Size frameSize = new Size((int) videoCapture.get(Videoio.CAP_PROP_FRAME_WIDTH),
                 (int) videoCapture.get(Videoio.CAP_PROP_FRAME_HEIGHT));
         logger.log(Level.INFO, String.format("Resolution: %s", frameSize));
         final FourCC fourCC = new FourCC("X264");
-        VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(), videoCapture.get(Videoio.CAP_PROP_FPS),
-                frameSize, true);
+        final VideoWriter videoWriter = new VideoWriter(outputFile, fourCC.toInt(),
+                videoCapture.get(Videoio.CAP_PROP_FPS), frameSize, true);
         final Mat mat = new Mat();
         int frames = 0;
         final long startTime = System.currentTimeMillis();

@@ -37,15 +37,21 @@ import org.opencv.videoio.Videoio;
  * @version 1.0.0
  * @since 1.0.0
  */
+// This is demo code, not worried about magic numbers, etc.
+@SuppressWarnings({ "checkstyle:magicnumber", "PMD.LawOfDemeter", "PMD.AvoidLiteralsInIfCondition",
+        "PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidUsingNativeCode", "PMD.AvoidFinalLocalVariable",
+        "PMD.CommentSize", "PMD.AvoidPrintStackTrace", "PMD.UseProperClassLoader", "PMD.AvoidPrefixingMethodParameters",
+        "PMD.DataflowAnomalyAnalysis" })
 final class PeopleDetect {
     /**
      * Logger.
      */
-    private static final Logger logger = Logger.getLogger(PeopleDetect.class // NOPMD
-            .getName());
+    // Logger is not a constant
+    @SuppressWarnings({ "checkstyle:constantname", "PMD.VariableNamingConventions" })
+    private static final Logger logger = Logger.getLogger(PeopleDetect.class.getName());
     /* Load the OpenCV system library */
     static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // NOPMD
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
     /**
@@ -64,7 +70,7 @@ final class PeopleDetect {
      * @param args
      *            String array of arguments.
      */
-    public static void main(final String[] args) {
+    public static void main(final String... args) {
         String url = null;
         final String outputFile = "../output/people-detect-java.avi";
         // Check how many arguments were passed in
@@ -114,10 +120,10 @@ final class PeopleDetect {
             hog.detectMultiScale(mat, foundLocations, foundWeights, 0.0, winStride, padding, 1.05, 2.0, false);
             if (foundLocations.rows() > 0) {
                 framesWithPeople++;
-                List<Double> weightList = foundWeights.toList();
-                List<Rect> rectList = foundLocations.toList();
-                int i = 0;
-                for (Rect rect : rectList) {
+                final List<Double> weightList = foundWeights.toList();
+                final List<Rect> rectList = foundLocations.toList();
+                int index = 0;
+                for (final Rect rect : rectList) {
                     rectPoint1.x = rect.x;
                     rectPoint1.y = rect.y;
                     rectPoint2.x = rect.x + rect.width;
@@ -129,9 +135,9 @@ final class PeopleDetect {
                     fontPoint.y = rect.y - 4;
                     // Print weight
                     // illustration
-                    Imgproc.putText(mat, String.format("%1.2f", weightList.get(i)), fontPoint, Core.FONT_HERSHEY_PLAIN,
-                            1.5, fontColor, 2, Core.LINE_AA, false);
-                    i++;
+                    Imgproc.putText(mat, String.format("%1.2f", weightList.get(index)), fontPoint,
+                            Core.FONT_HERSHEY_PLAIN, 1.5, fontColor, 2, Core.LINE_AA, false);
+                    index++;
                 }
             }
             videoWriter.write(mat);

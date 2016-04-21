@@ -18,6 +18,7 @@ import java.awt.event.KeyEvent;
  * @version 1.0.0
  * @since 1.0.0
  */
+@SuppressWarnings("PMD.LawOfDemeter")
 public class KeyEventFrame extends Frame implements AWTEventListener {
     /**
      * Serializable class version number.
@@ -38,6 +39,7 @@ public class KeyEventFrame extends Frame implements AWTEventListener {
      * @param event
      *            AWT event.
      */
+    @SuppressWarnings({ "PMD.DoNotCallSystemExit", "PMD.AvoidDeeplyNestedIfStmts" })
     @Override
     public final void eventDispatched(final AWTEvent event) {
         if (event instanceof KeyEvent) {

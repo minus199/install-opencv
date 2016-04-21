@@ -37,8 +37,8 @@ import org.opencv.videoio.Videoio;
 @SuppressWarnings({ "checkstyle:magicnumber", "PMD.LawOfDemeter", "PMD.AvoidLiteralsInIfCondition",
         "PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidUsingNativeCode", "PMD.AvoidFinalLocalVariable",
         "PMD.CommentSize", "PMD.AvoidPrintStackTrace", "PMD.UseProperClassLoader", "PMD.AvoidPrefixingMethodParameters",
-        "PMD.DataflowAnomalyAnalysis" })
-final class CaptureUI extends Applet implements Runnable { // NOPMD
+        "PMD.DataflowAnomalyAnalysis", "PMD.DoNotUseThreads" })
+final class CaptureUI extends Applet implements Runnable {
     /**
      * Serializable class version number.
      */
@@ -48,8 +48,7 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
      */
     // Logger is not a constant
     @SuppressWarnings({ "checkstyle:constantname", "PMD.VariableNamingConventions" })
-    private static final Logger logger = Logger.getLogger(CaptureUI.class // NOPMD
-            .getName());
+    private static final Logger logger = Logger.getLogger(CaptureUI.class.getName());
     /**
      * Mat for image capture.
      */
@@ -69,12 +68,11 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
     /**
      * Processing thread.
      */
-    @SuppressWarnings("PMD.DoNotUseThreads")
     private transient Thread captureThread;
 
     /* Load the OpenCV system library */
     static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // NOPMD
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
     /**
@@ -146,7 +144,6 @@ final class CaptureUI extends Applet implements Runnable { // NOPMD
     /**
      * Create frame acquisition thread and start.
      */
-    @SuppressWarnings("PMD.DoNotUseThreads")
     @Override
     public void start() {
         if (captureThread == null) {

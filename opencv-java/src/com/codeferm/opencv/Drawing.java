@@ -38,12 +38,12 @@ final class Drawing {
     /**
      * Logger.
      */
-    @SuppressWarnings("checkstyle:constantname") // Logger is not a constant
-    private static final Logger logger = Logger.getLogger(Drawing.class // NOPMD
-            .getName());
+    // Logger is not a constant
+    @SuppressWarnings({ "checkstyle:constantname", "PMD.VariableNamingConventions" })
+    private static final Logger logger = Logger.getLogger(Drawing.class.getName());
     /* Load the OpenCV system library */
     static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // NOPMD
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
     /**
