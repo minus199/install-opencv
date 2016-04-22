@@ -211,12 +211,15 @@ final class CameraCalibration {
                 // Read in image unchanged
                 final Mat mat = Imgcodecs.imread(fileName, Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
                 final Mat undistort = undistort(mat, cameraMatrix, distCoeffs);
-                // Get file name without extension
-                final String[] tokens = Paths.get(fileName).getFileName().toString().split("\\.");
-                final String writeFileName = String.format("%s%s-java-undistort.bmp", outDir, tokens[0]);
-                logger.log(Level.FINE, String.format("Writing image: %s", writeFileName));
-                // Write debug Mat to output dir
-                Imgcodecs.imwrite(writeFileName, undistort);
+                // Get full file name
+                final Path path = Paths.get(fileName).getFileName();
+                if (path != null) {
+                    final String writeFileName = String.format("%s%s-java-undistort.bmp", outDir,
+                            path.toString().split("\\.")[0]);
+                    logger.log(Level.FINE, String.format("Writing image: %s", writeFileName));
+                    // Write debug Mat to output dir
+                    Imgcodecs.imwrite(writeFileName, undistort);
+                }
                 // Clean up
                 mat.free();
                 undistort.free();
@@ -375,12 +378,15 @@ final class CameraCalibration {
                     // Convert to color for drawing
                     Imgproc.cvtColor(mat, vis, Imgproc.COLOR_GRAY2BGR);
                     Calib3d.drawChessboardCorners(vis, patternSize, corners, true);
-                    // Get file name without extension
-                    final String[] tokens = Paths.get(fileName).getFileName().toString().split("\\.");
-                    final String writeFileName = String.format("%s/%s-java.bmp", outDir, tokens[0]);
-                    logger.log(Level.FINE, String.format("Writing debug image: %s", writeFileName));
-                    // Write debug Mat to output dir
-                    Imgcodecs.imwrite(writeFileName, vis);
+                    // Get full file name
+                    final Path path = Paths.get(fileName).getFileName();
+                    if (path != null) {
+                        final String writeFileName = String.format("%s/%s-java.bmp", outDir,
+                                path.toString().split("\\.")[0]);
+                        logger.log(Level.FINE, String.format("Writing debug image: %s", writeFileName));
+                        // Write debug Mat to output dir
+                        Imgcodecs.imwrite(writeFileName, vis);
+                    }
                     // Clean up
                     vis.free();
                     // Add data collected to Lists
