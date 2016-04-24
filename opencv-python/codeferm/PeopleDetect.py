@@ -7,7 +7,7 @@ sgoldsmith@codeferm.com
 
 """Histogram of Oriented Gradients ([Dalal2005]) object detector.
 
-sys.argv[1] = source file or will default to "../../resources/walking.mp4" if no args passed.
+sys.argv[1] = source file or will default to "../../resources/960x720.mp4" if no args passed.
 
 @author: sgoldsmith
 
@@ -25,7 +25,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 # If no args passed then default to internal file
 if len(sys.argv) < 2:
-    url = "../../resources/walking.mp4"
+    url = "../../resources/960x720.mp4"
 else:
     url = sys.argv[1]
 outputFile = "../../output/people-detect-python.avi"

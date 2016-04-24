@@ -8,10 +8,10 @@ sgoldsmith@codeferm.com
 """Motion detector.
 
 Resizes frame, lowers sample rate and uses moving average to determine change
-percent. Inner rectangles are filtered out as well. This can result in ~30%
+percent. Inner rectangles are filtered out as well. This can result in ~40%
 better performance and a more stable ROI.
 
-sys.argv[1] = source file or will default to "../../resources/walking.mp4" if no args passed.
+sys.argv[1] = source file or will default to "../../resources/960x720.mp4" if no args passed.
 
 @author: sgoldsmith
 
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     logger.addHandler(handler)
     # If no args passed then default to internal file
     if len(sys.argv) < 2:
-        url = "../../resources/walking.mp4"
+        url = "../../resources/960x720.mp4"
     else:
         url = sys.argv[1]
     outputFile = "../../output/motion-detect-resize-python.avi"
