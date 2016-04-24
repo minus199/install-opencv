@@ -11,7 +11,7 @@ Resizes frame, lowers sample rate and uses moving average to determine change
 percent. This can result in up to ~1200% better performance and a more stable ROI.
 Histogram of Oriented Gradients ([Dalal2005]) object detector is used.
 
-sys.argv[1] = source file or will default to "../../resources/walking.mp4" if no args passed.
+sys.argv[1] = source file or will default to "../../resources/960x720.mp4" if no args passed.
 
 @author: sgoldsmith
 
@@ -75,7 +75,7 @@ if __name__ == '__main__':
     logger.addHandler(handler)
     # If no args passed then default to internal file
     if len(sys.argv) < 2:
-        url = "../../resources/walking.mp4"
+        url = "../../resources/960x720.mp4"
     else:
         url = sys.argv[1]
     outputFile = "../../output/people-detect-resize-python.avi"
@@ -166,11 +166,11 @@ if __name__ == '__main__':
                                 roisWithPeople += 1
                                 i = 0
                                 for x2, y2, w2, h2 in foundLocations:
-                                    imageRoi2 = image[y:y + (h * heightMultiplier), x:x + (w * widthMultiplier)]
+                                    imageRoi2 = image[y * heightMultiplier:y * heightMultiplier + (h * heightMultiplier), x * widthMultiplier:x * widthMultiplier + (w * widthMultiplier)]
                                     # Draw rectangle around people
                                     cv2.rectangle(imageRoi2, (x2, y2), (x2 + (w2 * widthMultiplier), y2 + (h2 * heightMultiplier) - 1), (255, 0, 0), 2)
                                     # Print weight
-                                    # cv2.putText(image, "%1.2f" % foundWeights[i], (x, y - 4), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 255, 255), thickness=2, lineType=cv2.LINE_AA)
+                                    cv2.putText(imageRoi2, "%1.2f" % foundWeights[i], (x2, y2 - 4), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 255, 255), thickness=2, lineType=cv2.LINE_AA)
                                     i += 1
                                 logger.debug("Detected people locations: %s" % (foundLocations))
             else:
