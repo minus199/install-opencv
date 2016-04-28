@@ -17,7 +17,8 @@ The best way to install OpenCV is from source since there are multiple ways
 to compile it (using GPU optimizations for instance). In order to automate this
 process I've put together scripts that install the necessary prerequisites
 and build OpenCV with C++, Java and Python bindings. I also included example
-source, so you can test the installation.
+source, so you can test the installation. Some of the examples will show you
+optimization techniques using motion detection and ROI.
 
 I no longer build ffmpeg from source. Instead I rely on libav, so the install
 process is faster now. Both Python and Java work with VideoWriter using X264
@@ -35,9 +36,9 @@ as well.
 * [FreeBSD License](#freebsd-license)
 
 ### Platforms Supported
-* Ubuntu 14.04.3 LTS x86_64
-* Ubuntu 14.04.3 LTS x86
-* Ubuntu 14.04.3 LTS armv7l (Will not build on [Official](http://odroid.com/dokuwiki/doku.php?id=en:c1_release_linux_ubuntu) ODROID images, see [Create Ubuntu root filesystem ODROID-C1/C1+](https://github.com/sgjava/ubuntu-mini#create-ubuntu-root-filesystem-odroid-c1c1))
+* Ubuntu 16.04 LTS x86_64
+* Ubuntu 16.04 LTS x86
+* Ubuntu 16.04 LTS armv7l (Will not build on [Official](http://odroid.com/dokuwiki/doku.php?id=en:c1_release_linux_ubuntu) ODROID images, see [Create Ubuntu root filesystem ODROID-C1/C1+](https://github.com/sgjava/ubuntu-mini#create-ubuntu-root-filesystem-odroid-c1c1))
 
 ### OpenCV versions
 I have included branches aligned with various versions of OpenCV. I'm not keeping
@@ -51,10 +52,11 @@ organizing releases.
 If something breaks when executing code with the OpenCV master branch then try
 again another day. I have had times where something that worked would segfault
 the JVM which was happening down in the C++ code. All part of being on the
-cutting edge.
+cutting edge. I have also moved to Ubuntu 16.04 in the master branch.
 
 * [2_4_9_0](https://github.com/sgjava/install-opencv/tree/2_4_9_0)
 * [3_0_0_0](https://github.com/sgjava/install-opencv/tree/3_0_0_0)
+* [3_1_0_0_UBUNTU1404](https://github.com/sgjava/install-opencv/tree/3_1_0_0_UBUNTU1404)
 
 ### WARNING
 This script has the ability to install/remove Ubuntu packages and it also
@@ -119,7 +121,7 @@ with an out of memory exception. To create a 1GB swap file use:
     * 2.20GHz, 4MB Cache
     * 8GB DIMM DDR3 Synchronous 1333 MHz
     * PNY CS1311 480 GB 2.5" SATA III Internal Solid State Drive SSD in AHCI mode
-    * Ubuntu 14.04.3 x86_64
+    * Ubuntu 16.04 x86_64
     * ~21 minutes (depends on download latency)
 * MacBookPro 11,3
     * Test build on 11/02/2015
@@ -127,7 +129,7 @@ with an out of memory exception. To create a 1GB swap file use:
     * 2.50GHz, 6MB Cache
     * 16GB SODIMM DDR3 Synchronous 1600 MHz (0.6 ns)
     * APPLE SSD SM1024
-    * Ubuntu 14.04.3 x86_64
+    * Ubuntu 16.04 x86_64
     * ~16 minutes (depends on download latency)
 * ODROID-C1/C1+ (Mali-450 MP2 GPU has no support for OpenCL)
     * Test build on 02/12/2016
@@ -135,7 +137,7 @@ with an out of memory exception. To create a 1GB swap file use:
     * 1.5GHz Cortex-A5 (set to 1.6 GHz)
     * 1GB DDR3
     * 32GB SanDisk Extreme PRO 32GB UHS-I/U3 Micro SDHC
-    * Ubuntu 14.04.3
+    * Ubuntu 16.04
     * ~1.3 hours (depends on download latency)
 * ODROID-XU4 (Mali-T628 MP6 GPU has OpenCL support)
     * Test build on 02/15/2016
@@ -143,14 +145,14 @@ with an out of memory exception. To create a 1GB swap file use:
     * 1.4GHz Cortex-A7 and 2.0 GHz Cortex-A15 (both set to maximum frequency)
     * 2Gbyte LPDDR3 RAM PoP stacked
     * 32GB SanDisk Extreme 32GB UHS-1 Micro SDHC
-    * Ubuntu 14.04.3
+    * Ubuntu 16.04
     * ~35 minutes (depends on download latency)
 * MK808 mini PC
     * Rockchip RK3066 dual core
     * 1.6GHz Cortex-A9 (set to 1.5 GHz)
     * 1GB DDR3
     * 32GB SDHC Class 10
-    * Ubuntu 14.04.3
+    * Ubuntu 16.04
     * ~2.5 hours (depends on download latency)
 * MK802IV mini PC
     * Test build on 02/02/2015
@@ -158,7 +160,7 @@ with an out of memory exception. To create a 1GB swap file use:
     * 1.6GHz Cortex-A9 (set to 1.2 GHz)
     * 2GB DDR3
     * 32GB SDHC Class 10
-    * Ubuntu 14.04.3
+    * Ubuntu 16.04
     * ~1 hours (depends on download latency)
 
 #### Build output

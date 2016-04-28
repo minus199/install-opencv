@@ -4,10 +4,10 @@
 #
 # @author: sgoldsmith
 #
-# Install and configure OpenCV for Ubuntu 14.04.3 (Desktop/Server 
+# Install and configure OpenCV for Ubuntu 16.04 (Desktop/Server 
 # x86/x86_64 bit/armv7l). Please note that since some of the operations change
 # configurations, etc. I cannot guarantee it will work on future or previous
-# versions of Ubuntu. All testing was performed on Ubuntu 14.04.3
+# versions of Ubuntu. All testing was performed on Ubuntu 16.04
 # LTS x86_64,x86 and armv7l with the latest updates applied. Most likely
 # this will work on newer versions as well. 
 #
@@ -21,7 +21,7 @@
 # 
 # Prerequisites:
 #
-# o Install Ubuntu 14.04.3, update (I used VirtualBox for testing) and
+# o Install Ubuntu 16.04, update (I used VirtualBox for testing) and
 #   make sure to select OpenSSH Server during install. Internet connection is
 #   required to download libraries, frameworks, etc.
 #    o sudo apt-get update
@@ -72,16 +72,22 @@ export JAVA_HOME=$javahome
 log "JAVA_HOME = $JAVA_HOME"
 
 log "Installing OpenCV dependenices..."
+
 # Install build tools
-apt-get -y install build-essential cmake yasm doxygen >> $logfile 2>&1
+apt-get -y install build-essential pkg-config cmake yasm doxygen >> $logfile 2>&1
+
 # Install Media I/O libraries 
-apt-get -y install zlib1g-dev libjpeg-dev libwebp-dev libpng-dev libtiff5-dev libjasper-dev libopenexr-dev libgdal-dev >> $logfile 2>&1
+apt-get -y install zlib1g-dev libjpeg-dev libwebp-dev libpng-dev libtiff-dev libjasper-dev libopenexr-dev libgdal-dev >> $logfile 2>&1
+
 # Install Video I/O libraries, support for Firewire video cameras and video streaming libraries
-apt-get -y install libdc1394-22-dev libavcodec-dev libavformat-dev libswscale-dev libtheora-dev libvorbis-dev libxvidcore-dev libx264-dev libopencore-amrnb-dev libopencore-amrwb-dev libv4l-dev libxine2-dev >> $logfile 2>&1
+apt-get -y install libgtk2.0-dev libdc1394-22-dev libavcodec-dev libavformat-dev libswscale-dev libtheora-dev libvorbis-dev libxvidcore-dev libx264-dev libopencore-amrnb-dev libopencore-amrwb-dev libv4l-dev libxine2-dev >> $logfile 2>&1
+
 # Install the Python development environment and the Python Numerical library
 apt-get -y install python-dev python-tk python-numpy python3-dev python3-tk python3-numpy >> $logfile 2>&1
+
 # Install the parallel code processing and linear algebra library
-apt-get -y install libtbb-dev libeigen3-dev >> $logfile 2>&1
+apt-get -y install libtbb2 libtbb-dev libeigen3-dev >> $logfile 2>&1
+
 # If not ARM then install the Qt library
 if [ "$arch" != "armv7l" ]; then
 	apt-get -y install qt5-default libvtk6-dev >> $logfile 2>&1
