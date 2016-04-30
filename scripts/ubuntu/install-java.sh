@@ -4,10 +4,10 @@
 #
 # @author: sgoldsmith
 #
-# Install and configure JDK 8 for Ubuntu 14.04.3 (Desktop/Server 
+# Install and configure JDK 8 for Ubuntu 16.04 (Desktop/Server 
 # x86/x86_64 bit/armv7l). Please note that since some of the operations change
 # configurations, etc. I cannot guarantee it will work on future or previous
-# versions of Ubuntu. All testing was performed on Ubuntu 14.04.3
+# versions of Ubuntu. All testing was performed on Ubuntu 16.04
 # LTS x86_64,x86 and armv7l with the latest updates applied. Most likely
 # this will work on newer versions as well. 
 #
@@ -21,7 +21,7 @@
 # 
 # Prerequisites:
 #
-# o Install Ubuntu 14.04.3, update (I used VirtualBox for testing) and
+# o Install Ubuntu 16.04, update (I used VirtualBox for testing) and
 #   make sure to select OpenSSH Server during install. Internet connection is
 #   required to download libraries, frameworks, etc.
 #    o sudo apt-get update
