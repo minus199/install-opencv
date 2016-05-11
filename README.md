@@ -117,20 +117,20 @@ with an out of memory exception. To create a 1GB swap file use:
 
 #### Build times
 * Acer AM3470G-UW10P Desktop
-    * Test build on 04/14/2016
+    * Test build on 05/10/2016
     * AMD A6-3620 quad core
     * 2.20GHz, 4MB Cache
     * 8GB DIMM DDR3 Synchronous 1333 MHz
     * PNY CS1311 480 GB 2.5" SATA III Internal Solid State Drive SSD in AHCI mode
     * Ubuntu 16.04 x86_64
-    * ~21 minutes (depends on download latency)
+    * ~31 minutes (depends on download latency)
 * MacBookPro 11,3
     * Test build on 11/02/2015
     * Intel(R) Core(TM) i7-4870HQ (8 cores)
     * 2.50GHz, 6MB Cache
     * 16GB SODIMM DDR3 Synchronous 1600 MHz (0.6 ns)
     * APPLE SSD SM1024
-    * Ubuntu 16.04 x86_64
+    * Ubuntu 14.04 x86_64
     * ~16 minutes (depends on download latency)
 * ODROID-C1/C1+ (Mali-450 MP2 GPU has no support for OpenCL)
     * Test build on 02/12/2016
@@ -138,7 +138,7 @@ with an out of memory exception. To create a 1GB swap file use:
     * 1.5GHz Cortex-A5 (set to 1.6 GHz)
     * 1GB DDR3
     * 32GB SanDisk Extreme PRO 32GB UHS-I/U3 Micro SDHC
-    * Ubuntu 16.04
+    * Ubuntu 14.04
     * ~1.3 hours (depends on download latency)
 * ODROID-XU4 (Mali-T628 MP6 GPU has OpenCL support)
     * Test build on 02/15/2016
@@ -146,14 +146,14 @@ with an out of memory exception. To create a 1GB swap file use:
     * 1.4GHz Cortex-A7 and 2.0 GHz Cortex-A15 (both set to maximum frequency)
     * 2Gbyte LPDDR3 RAM PoP stacked
     * 32GB SanDisk Extreme 32GB UHS-1 Micro SDHC
-    * Ubuntu 16.04
+    * Ubuntu 14.04
     * ~35 minutes (depends on download latency)
 * MK808 mini PC
     * Rockchip RK3066 dual core
     * 1.6GHz Cortex-A9 (set to 1.5 GHz)
     * 1GB DDR3
     * 32GB SDHC Class 10
-    * Ubuntu 16.04
+    * Ubuntu 14.04
     * ~2.5 hours (depends on download latency)
 * MK802IV mini PC
     * Test build on 02/02/2015
@@ -161,7 +161,7 @@ with an out of memory exception. To create a 1GB swap file use:
     * 1.6GHz Cortex-A9 (set to 1.2 GHz)
     * 2GB DDR3
     * 32GB SDHC Class 10
-    * Ubuntu 16.04
+    * Ubuntu 14.04
     * ~1 hours (depends on download latency)
 
 #### Build output
