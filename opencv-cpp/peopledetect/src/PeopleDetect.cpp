@@ -47,7 +47,6 @@ int main(int argc, char *argv[]) {
 				(int) capture.get(CAP_PROP_FPS),
 				Size((int) capture.get(CAP_PROP_FRAME_WIDTH),
 						(int) capture.get(CAP_PROP_FRAME_HEIGHT)));
-		int frames_with_motion = 0;
 		int frames = 0;
 		int frames_with_people = 0;
 		Scalar rect_color = Scalar(0, 255, 0);
