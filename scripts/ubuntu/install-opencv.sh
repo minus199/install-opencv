@@ -89,7 +89,7 @@ apt-get -y install python-dev python-tk python-numpy python3-dev python3-tk pyth
 apt-get -y install libtbb2 libtbb-dev libeigen3-dev >> $logfile 2>&1
 
 # If not ARM then install the Qt library
-if [ "$arch" != "armv7l" ]; then
+if [ "$arch" != "armv7l" ] || [ "$arch" != "aarch64" ]; then
 	apt-get -y install qt5-default libvtk6-dev >> $logfile 2>&1
 fi
 
@@ -172,8 +172,8 @@ cd build
 #
 
 # If ARM then compile with multi-core, FPU and NEON extensions
-if [ "$arch" = "armv7l" ]; then
-	log "Making for ARMV7L..."
+if [ "$arch" = "armv7l" ] || [ "$arch" = "aarch64" ]; then
+	log "Making for ARM..."
 	 # -DWITH_OPENGL=ON requires -DCMAKE_CXX_FLAGS_RELEASE="-Wa,-mimplicit-it=thumb" to fix "Error: thumb conditional instruction should be in IT block"
 	 # This will affect performance plus is doesn't make sense to use on a headless device
 	cmake $opencvextramodpath -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local -DWITH_QT=OFF -DWITH_TBB=ON -DBUILD_TBB=ON -DBUILD_EXAMPLES=ON -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_JPEG=ON -DENABLE_VFPV3=ON -DENABLE_NEON=ON .. >> $logfile 2>&1
