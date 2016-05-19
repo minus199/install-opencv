@@ -89,7 +89,7 @@ apt-get -y install python-dev python-tk python-numpy python3-dev python3-tk pyth
 apt-get -y install libtbb2 libtbb-dev libeigen3-dev >> $logfile 2>&1
 
 # If not ARM then install the Qt library
-if [ "$arch" != "armv7l" ] || [ "$arch" != "aarch64" ]; then
+if [ "$arch" != "armv7l" ] && [ "$arch" != "aarch64" ]; then
 	apt-get -y install qt5-default libvtk6-dev >> $logfile 2>&1
 fi
 
