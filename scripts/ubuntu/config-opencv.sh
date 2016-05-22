@@ -45,6 +45,9 @@ jdhuff="/3rdparty/libjpeg/jdhuff.c"
 # Relative path to jdmarker.c
 jdmarker="/3rdparty/libjpeg/jdmarker.c"
 
+# Protobuf platform_macros.h
+protobuf="/modules/dnn/3rdparty/protobuf/src/google/protobuf/stubs/platform_macros.h"
+
 # Oracle JDK
 javahome=/usr/lib/jvm/jdk1.8.0
 

@@ -76,10 +76,10 @@ log "Installing OpenCV dependenices..."
 # Install build tools
 apt-get -y install build-essential pkg-config cmake yasm doxygen >> $logfile 2>&1
 
-# Install Media I/O libraries 
+# Install media I/O libraries 
 apt-get -y install zlib1g-dev libjpeg-dev libwebp-dev libpng-dev libtiff-dev libjasper-dev libopenexr-dev libgdal-dev >> $logfile 2>&1
 
-# Install Video I/O libraries, support for Firewire video cameras and video streaming libraries
+# Install video I/O libraries, support for Firewire video cameras and video streaming libraries
 apt-get -y install libgtk2.0-dev libdc1394-22-dev libavcodec-dev libavformat-dev libswscale-dev libtheora-dev libvorbis-dev libxvidcore-dev libx264-dev libopencore-amrnb-dev libopencore-amrwb-dev libv4l-dev libxine2-dev >> $logfile 2>&1
 
 # Install the Python development environment and the Python Numerical library
@@ -92,6 +92,9 @@ apt-get -y install libtbb2 libtbb-dev libeigen3-dev >> $logfile 2>&1
 if [ "$arch" != "armv7l" ] && [ "$arch" != "aarch64" ]; then
 	apt-get -y install qt5-default libvtk6-dev >> $logfile 2>&1
 fi
+
+# Install libraries needed for contrib
+apt-get -y install libprotobuf-dev protobuf-compiler
 
 # Uninstall OpenCV if it exists
 opencvhome="$HOME/opencv-$opencvver"
@@ -127,6 +130,11 @@ fi
 
 # Patch source pre-compile
 log "Patching source pre-compile"
+
+if [ "$installcontrib" = "True" ]; then
+	# Patch platform_macros.h to build with ARM64
+	sed -i ':a;N;$!ba;s/#else\n#error Host architecture was not detected as supported by protobuf\n#endif/#elif defined(__aarch64__)\n#define GOOGLE_PROTOBUF_ARCH_ARM 1\n#define GOOGLE_PROTOBUF_ARCH_64_BIT 1\n#else\n#error Host architecture was not detected as supported by protobuf\n#endif/g' "$opencvcontribhome$protobuf"	
+fi
 
 # Patch jdhuff.c to remove "Invalid SOS parameters for sequential JPEG" warning
 sed -i 's~WARNMS(cinfo, JWRN_NOT_SEQUENTIAL);~//WARNMS(cinfo, JWRN_NOT_SEQUENTIAL);\n      ; // NOP~g' "$opencvhome$jdhuff"
