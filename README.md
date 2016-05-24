@@ -133,16 +133,16 @@ with an out of memory exception. To create a 1GB swap file use:
     * ~16 minutes (depends on download latency)
 * ODROID-C0/C1/C1+ (Mali-450 MP2 GPU has no support for OpenCL)
     * Test build on 02/12/2016
-    * Amlogic S805 quad core
-    * 1.5GHz Cortex-A5 (set to 1.6 GHz)
+    * Amlogic S805 Cortex-A5 quad core
+    * 1.5GHz (set to 1.6 GHz, conservative governor)
     * 1GB DDR3
     * 32GB SanDisk Ultra 32GB microSDHC UHS-I Card
     * Ubuntu 14.04
     * ~1.3 hours (depends on download latency)
 * ODROID-C2 (Mali™-450 GPU (3 Pixel-processors + 2 Vertex shader processors)
     * Test build on 05/22/2016
-    * Amlogic ARM Cortex®-A53(ARMv8) 
-    * 2Ghz quad core CPUs
+    * Amlogic ARM Cortex®-A53 quad core (ARMv8) 
+    * 2Ghz (conservative governor)
     * 2GB DDR3
     * 32GB SanDisk Ultra 32GB microSDHC UHS-I
     * Ubuntu 16.04
