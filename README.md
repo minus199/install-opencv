@@ -36,9 +36,10 @@ as well.
 * [FreeBSD License](#freebsd-license)
 
 ### Platforms Supported
-* Ubuntu 16.04 LTS x86_64
-* Ubuntu 16.04 LTS x86
-* Ubuntu 16.04 LTS armv7l (Will not build on [Official](http://odroid.com/dokuwiki/doku.php?id=en:c1_release_linux_ubuntu) ODROID images, see [Create Ubuntu root filesystem ODROID-C1/C1+](https://github.com/sgjava/ubuntu-mini#create-ubuntu-root-filesystem-odroid-c1c1))
+* Ubuntu 16.04 LTS x86 (32 bit)
+* Ubuntu 16.04 LTS x86_64 (64 bit)
+* Ubuntu 16.04 LTS ARMV7 (32 bit)
+* Ubuntu 16.04 LTS ARMV8 (64 bit)
 
 ### OpenCV versions
 I have included branches aligned with various versions of OpenCV. I'm not keeping
@@ -67,7 +68,6 @@ sane in config-*.sh files.
 
 ### To do
 * Install X265 - I tried FFMPEG PPA and libx265-dev, but no luck with X265 FOURCC.
-* Build for Python 3
 
 ### Provides
 * OpenCV from source
@@ -131,14 +131,22 @@ with an out of memory exception. To create a 1GB swap file use:
     * APPLE SSD SM1024
     * Ubuntu 14.04 x86_64
     * ~16 minutes (depends on download latency)
-* ODROID-C1/C1+ (Mali-450 MP2 GPU has no support for OpenCL)
+* ODROID-C0/C1/C1+ (Mali-450 MP2 GPU has no support for OpenCL)
     * Test build on 02/12/2016
     * Amlogic S805 quad core
     * 1.5GHz Cortex-A5 (set to 1.6 GHz)
     * 1GB DDR3
-    * 32GB SanDisk Extreme PRO 32GB UHS-I/U3 Micro SDHC
+    * 32GB SanDisk Ultra 32GB microSDHC UHS-I Card
     * Ubuntu 14.04
     * ~1.3 hours (depends on download latency)
+* ODROID-C2 (Mali™-450 GPU (3 Pixel-processors + 2 Vertex shader processors)
+    * Test build on 05/22/2016
+    * Amlogic ARM Cortex®-A53(ARMv8) 
+    * 2Ghz quad core CPUs
+    * 2GB DDR3
+    * 32GB SanDisk Ultra 32GB microSDHC UHS-I
+    * Ubuntu 16.04
+    * ~1.1 hours (depends on download latency)
 * ODROID-XU4 (Mali-T628 MP6 GPU has OpenCL support)
     * Test build on 02/15/2016
     * Samsung Exynos 5422 Cortex-A15 quad core and Cortex-A7 quad core
