@@ -24,21 +24,21 @@ javahome=/usr/lib/jvm/jdk1.8.0
 
 # Set file based on architecture
 if [ "$arch" = "x86_64" ]; then
-	jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u91-b14/"
-	jdkver="jdk1.8.0_91"
-	jdkarchive="jdk-8u91-linux-x64.tar.gz"
+	jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u102-b14/"
+	jdkver="jdk1.8.0_102"
+	jdkarchive="jdk-8u102-linux-x64.tar.gz"
 elif [ "$arch" = "i586" ] || [ "$arch" = "i686" ]; then
-	jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u91-b14/"
-	jdkver="jdk1.8.0_91"
-	jdkarchive="jdk-8u91-linux-i586.tar.gz"
+	jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u102-b14/"
+	jdkver="jdk1.8.0_102"
+	jdkarchive="jdk-8u102-linux-i586.tar.gz"
 elif [ "$arch" = "armv7l" ]; then
-	jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u91-b14/"
-	jdkver="jdk1.8.0_91"
-	jdkarchive="jdk-8u91-linux-arm32-vfp-hflt.tar.gz"
+	jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u102-b14/"
+	jdkver="jdk1.8.0_102"
+	jdkarchive="jdk-8u102-linux-arm32-vfp-hflt.tar.gz"
 elif [ "$arch" = "aarch64" ]; then
-	jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u91-b14/"
-	jdkver="jdk1.8.0_91"
-	jdkarchive="jdk-8u91-linux-arm64-vfp-hflt.tar.gz"
+	jdkurl="http://download.oracle.com/otn-pub/java/jdk/8u102-b14/"
+	jdkver="jdk1.8.0_102"
+	jdkarchive="jdk-8u102-linux-arm64-vfp-hflt.tar.gz"
 else
 	echo "\nNo supported architectures detected!"
 	exit 1
