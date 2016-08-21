@@ -187,7 +187,7 @@ if [ "$arch" = "armv7l" ]; then
 	cmake $opencvextramodpath -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local -DWITH_QT=OFF -DWITH_TBB=ON -DBUILD_TBB=ON -DBUILD_EXAMPLES=ON -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_JPEG=ON -DENABLE_VFPV3=ON -DENABLE_NEON=ON .. >> $logfile 2>&1
 elif [ "$arch" = "aarch64" ]; then
 	log "Making for ARM64..."
-	 # -DENABLE_NEON=ON causes build to fail!
+	 # -DENABLE_NEON=ON causes build to fail with assembler Error: unknown mnemonic
 	cmake $opencvextramodpath -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local -DWITH_QT=OFF -DWITH_TBB=ON -DBUILD_TBB=ON -DBUILD_EXAMPLES=ON -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_JPEG=ON -DENABLE_VFPV3=ON -DENABLE_NEON=OFF .. >> $logfile 2>&1
 else
 	log "Making for X86..."

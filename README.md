@@ -116,21 +116,13 @@ with an out of memory exception. To create a 1GB swap file use:
 
 #### Build times
 * Acer AM3470G-UW10P Desktop
-    * Test build on 05/10/2016
+    * Test build on 08/19/2016
     * AMD A6-3620 quad core
     * 2.20GHz, 4MB Cache
     * 8GB DIMM DDR3 Synchronous 1333 MHz
     * PNY CS1311 480 GB 2.5" SATA III Internal Solid State Drive SSD in AHCI mode
     * Ubuntu 16.04 x86_64
     * ~31 minutes (depends on download latency)
-* MacBookPro 11,3
-    * Test build on 11/02/2015
-    * Intel(R) Core(TM) i7-4870HQ (8 cores)
-    * 2.50GHz, 6MB Cache
-    * 16GB SODIMM DDR3 Synchronous 1600 MHz (0.6 ns)
-    * APPLE SSD SM1024
-    * Ubuntu 14.04 x86_64
-    * ~16 minutes (depends on download latency)
 * ODROID-C0/C1/C1+ (Mali-450 MP2 GPU has no support for OpenCL)
     * Test build on 02/12/2016
     * Amlogic S805 Cortex-A5 quad core
@@ -155,6 +147,14 @@ with an out of memory exception. To create a 1GB swap file use:
     * 32GB SanDisk Extreme 32GB UHS-1 Micro SDHC
     * Ubuntu 14.04
     * ~35 minutes (depends on download latency)
+* PINE64 (Dual core Mali 400 MP2 GPU has no support for OpenCL)
+    * Test build on 08/20/2016
+    * Allwinner R18 Cortex A53 quad core
+    * 1.2Ghz (conservative governor)
+    * 2Gbyte DDR3 SDRAM
+    * 32GB PNY U3 High Performance 32GB High Speed MicroSDHC Class 10 UHS-I
+    * Ubuntu 16.04
+    * ~1.5 hours (depends on download latency)
 * MK808 mini PC
     * Rockchip RK3066 dual core
     * 1.6GHz Cortex-A9 (set to 1.5 GHz)
