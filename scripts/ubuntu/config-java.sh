@@ -13,9 +13,6 @@
 # Get architecture
 arch=$(uname -m)
 
-# Source release info
-. /etc/lsb-release
-
 # Temp dir
 tmpdir="$HOME/temp"
 

@@ -131,11 +131,6 @@ fi
 # Patch source pre-compile
 log "Patching source pre-compile"
 
-if [ "$installcontrib" = "True" ]; then
-	# Patch platform_macros.h to build with ARM64
-	sed -i ':a;N;$!ba;s/#else\n#error Host architecture was not detected as supported by protobuf\n#endif/#elif defined(__aarch64__)\n#define GOOGLE_PROTOBUF_ARCH_ARM 1\n#define GOOGLE_PROTOBUF_ARCH_64_BIT 1\n#else\n#error Host architecture was not detected as supported by protobuf\n#endif/g' "$opencvcontribhome$protobuf"	
-fi
-
 # Patch jdhuff.c to remove "Invalid SOS parameters for sequential JPEG" warning
 sed -i 's~WARNMS(cinfo, JWRN_NOT_SEQUENTIAL);~//WARNMS(cinfo, JWRN_NOT_SEQUENTIAL);\n      ; // NOP~g' "$opencvhome$jdhuff"
 
@@ -193,6 +188,16 @@ else
 	log "Making for X86..."
 	cmake $opencvextramodpath -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local -DWITH_GSTREAMER=OFF -DWITH_QT=ON -DWITH_OPENGL=ON -DWITH_TBB=ON -DBUILD_TBB=ON -DBUILD_EXAMPLES=ON -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_JPEG=ON .. >> $logfile 2>&1
 fi
+
+# Patch post cmake
+log "Patching source post cmake"
+
+# Support ARM64
+if [ "$installcontrib" = "True" ]; then
+	# Patch platform_macros.h to build with ARM64
+	sed -i ':a;N;$!ba;s/#else\n#error Host architecture was not detected as supported by protobuf\n#endif/#elif defined(__aarch64__)\n#define GOOGLE_PROTOBUF_ARCH_ARM 1\n#define GOOGLE_PROTOBUF_ARCH_64_BIT 1\n#else\n#error Host architecture was not detected as supported by protobuf\n#endif/g' "$opencvcontribhome$protobuf"	
+fi
+
 make -j$(getconf _NPROCESSORS_ONLN) >> $logfile 2>&1
 make install >> $logfile 2>&1
 echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf

@@ -13,9 +13,6 @@
 # Get architecture
 arch=$(uname -m)
 
-# Source release info
-. /etc/lsb-release
-
 # Temp dir
 tmpdir="$HOME/temp"
 
@@ -46,7 +43,7 @@ jdhuff="/3rdparty/libjpeg/jdhuff.c"
 jdmarker="/3rdparty/libjpeg/jdmarker.c"
 
 # Protobuf platform_macros.h
-protobuf="/modules/dnn/3rdparty/protobuf/src/google/protobuf/stubs/platform_macros.h"
+protobuf="/modules/dnn/3rdparty/protobuf/sources/protobuf-3.1.0/src/google/protobuf/stubs/platform_macros.h"
 
 # Oracle JDK
 javahome=/usr/lib/jvm/jdk1.8.0
