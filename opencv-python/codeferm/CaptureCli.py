@@ -50,11 +50,11 @@ logger.info("Resolution: %dx%d" % (videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH),
                                videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT)))
 # Deal with VideoCapture always returning True otherwise it will hang on VideoCapture.grab()
 if videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH) > 0 and videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT) > 0:
-    start = time.time()
     framesLeft = sampleFrames
     logger.info("Calculate FPS using %d frames" % sampleFrames)
     videoWriter = cv2.VideoWriter(outputFile, cv2.VideoWriter_fourcc(*'X264'), -1,
                               (int(videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH)), int(videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT))), True)
+    start = time.time()
     # Calculate FPS
     while(framesLeft > 0):
         videoCapture.grab()
@@ -68,8 +68,8 @@ if videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH) > 0 and videoCapture.get(cv2.CAP_P
     del videoWriter
     videoWriter = cv2.VideoWriter(outputFile, cv2.VideoWriter_fourcc(*'X264'), fps,
                               (int(videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH)), int(videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT))), True)
-    start = time.time()
     framesLeft = frames
+    start = time.time()
     # Wait for no frames left
     while(framesLeft > 0):
         videoCapture.grab()
