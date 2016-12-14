@@ -27,7 +27,7 @@ logger.addHandler(handler)
 # If no args passed then use default camera
 if len(sys.argv) < 2:
     url = -1
-    frames = 100
+    frames = 200
 # If arg is an integer then convert to int
 elif re.match(r"[-+]?\d+$", sys.argv[1]) is not None:
     url = int(sys.argv[1])
@@ -35,7 +35,7 @@ elif re.match(r"[-+]?\d+$", sys.argv[1]) is not None:
 else:
     url = sys.argv[1]
     frames = int(sys.argv[2])
-sampleFrames = 100
+sampleFrames = 200
 outputFile = "../../output/capturecli-python.avi"
 # Set socket timeout in seconds (defaults to forever)
 socket.setdefaulttimeout(10)    
@@ -50,10 +50,10 @@ logger.info("Resolution: %dx%d" % (videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH),
                                videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT)))
 # Deal with VideoCapture always returning True otherwise it will hang on VideoCapture.grab()
 if videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH) > 0 and videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT) > 0:
-    framesLeft = sampleFrames
     logger.info("Calculate FPS using %d frames" % sampleFrames)
-    videoWriter = cv2.VideoWriter(outputFile, cv2.VideoWriter_fourcc(*'X264'), -1,
+    videoWriter = cv2.VideoWriter(outputFile, cv2.VideoWriter_fourcc(*'X264'), videoCapture.get(cv2.CAP_PROP_FPS),
                               (int(videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH)), int(videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT))), True)
+    framesLeft = sampleFrames
     start = time.time()
     # Calculate FPS
     while(framesLeft > 0):
@@ -61,6 +61,8 @@ if videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH) > 0 and videoCapture.get(cv2.CAP_P
         success, image = videoCapture.read()
         if success:
             videoWriter.write(image)
+        else:
+            logger.error("Failed to read image")
         framesLeft -= 1
     elapsed = time.time() - start
     fps = sampleFrames / elapsed
@@ -76,6 +78,8 @@ if videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH) > 0 and videoCapture.get(cv2.CAP_P
         success, image = videoCapture.read()
         if success:
             videoWriter.write(image)
+        else:
+            logger.error("Failed to read image")
         framesLeft -= 1
     elapsed = time.time() - start
     logger.info("Captured %4.1f FPS, elapsed time: %4.2f seconds" % (frames / elapsed, elapsed))
