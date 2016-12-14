@@ -53,14 +53,19 @@ if videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH) > 0 and videoCapture.get(cv2.CAP_P
     start = time.time()
     framesLeft = sampleFrames
     logger.info("Calculate FPS using %d frames" % sampleFrames)
+    videoWriter = cv2.VideoWriter(outputFile, cv2.VideoWriter_fourcc(*'X264'), -1,
+                              (int(videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH)), int(videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT))), True)
     # Calculate FPS
     while(framesLeft > 0):
         videoCapture.grab()
         success, image = videoCapture.read()
+        if success:
+            videoWriter.write(image)
         framesLeft -= 1
     elapsed = time.time() - start
     fps = sampleFrames / elapsed
     logger.info("Calculated %4.1f FPS, elapsed time: %4.2f seconds" % (fps, elapsed))
+    del videoWriter
     videoWriter = cv2.VideoWriter(outputFile, cv2.VideoWriter_fourcc(*'X264'), fps,
                               (int(videoCapture.get(cv2.CAP_PROP_FRAME_WIDTH)), int(videoCapture.get(cv2.CAP_PROP_FRAME_HEIGHT))), True)
     start = time.time()
