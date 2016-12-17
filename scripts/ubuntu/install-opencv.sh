@@ -193,10 +193,7 @@ fi
 log "Patching source post cmake"
 
 # Support ARM64
-if [ "$installcontrib" = "True" ]; then
-	# Patch platform_macros.h to build with ARM64
-	sed -i ':a;N;$!ba;s/#else\n#error Host architecture was not detected as supported by protobuf\n#endif/#elif defined(__aarch64__)\n#define GOOGLE_PROTOBUF_ARCH_ARM 1\n#define GOOGLE_PROTOBUF_ARCH_64_BIT 1\n#else\n#error Host architecture was not detected as supported by protobuf\n#endif/g' "$opencvcontribhome$protobuf"	
-fi
+sed -i ':a;N;$!ba;s/#else\n#error Host architecture was not detected as supported by protobuf\n#endif/#elif defined(__aarch64__)\n#define GOOGLE_PROTOBUF_ARCH_ARM 1\n#define GOOGLE_PROTOBUF_ARCH_64_BIT 1\n#else\n#error Host architecture was not detected as supported by protobuf\n#endif/g' "$opencvhome$protobuf"	
 
 make -j$(getconf _NPROCESSORS_ONLN) >> $logfile 2>&1
 make install >> $logfile 2>&1
