@@ -42,7 +42,7 @@ else
 fi
 
 # Apache Ant
-anturl="http://www.us.apache.org/dist/ant/binaries/"
+anturl="https://www.apache.org/dist/ant/binaries/"
 antarchive="apache-ant-1.9.7-bin.tar.gz"
 antver="apache-ant-1.9.7"
 anthome="/opt/ant"
