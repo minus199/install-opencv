@@ -128,8 +128,8 @@ else
 	opencvextramodpath=""
 fi
 
-# Patch source pre-compile
-log "Patching source pre-compile"
+# Patch source pre cmake
+log "Patching source pre cmake"
 
 # Patch jdhuff.c to remove "Invalid SOS parameters for sequential JPEG" warning
 sed -i 's~WARNMS(cinfo, JWRN_NOT_SEQUENTIAL);~//WARNMS(cinfo, JWRN_NOT_SEQUENTIAL);\n      ; // NOP~g' "$opencvhome$jdhuff"
@@ -201,7 +201,7 @@ echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf
 ldconfig
 
 log "Removing $tmpdir"
-rm -rf "$tmpdir" 
+rm -rf "$tmpdir"
 
 # Get end time
 endtime=$(date "$dateformat")
