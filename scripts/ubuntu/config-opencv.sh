@@ -16,9 +16,7 @@ arch=$(uname -m)
 # Temp dir
 tmpdir="$HOME/temp"
 
-# OpenCV version
-opencvver="3.1.0"
-# git clone --depth 1 -b 3.0.0 https://github.com/Itseez/opencv.git
+# opencvcmd="git clone --depth 1 -b 3.0.0 https://github.com/Itseez/opencv.git"
 opencvcmd="git clone --depth 1 https://github.com/Itseez/opencv.git"
 # Set installcontrib to True to add to cmake
 installcontrib="True"

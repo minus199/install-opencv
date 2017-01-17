@@ -13,16 +13,13 @@
  ╚██████╔╝██║     ███████╗██║ ╚████║╚██████╗ ╚████╔╝   
   ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝  ╚═══╝
   ```    
-The best way to install OpenCV is from source since there are multiple ways
-to compile it (using GPU optimizations for instance). In order to automate this
-process I've put together scripts that install the necessary prerequisites
-and build OpenCV with C++, Java and Python bindings. I also included example
-source, so you can test the installation. Some of the examples will show you
-optimization techniques using motion detection and ROI.
+The best way to install OpenCV is from source since there are multiple ways to compile it (using GPU optimizations for instance). In order to automate this process I've put together scripts that install the necessary prerequisites and build OpenCV with C++, Java and Python bindings. I also included example source, so you can test the installation. Some of the examples will show you optimization techniques using motion detection and ROI.
 
-I no longer build ffmpeg from source. Instead I rely on libav, so the install
-process is faster now. Both Python and Java work with VideoWriter using X264
-as well.
+I no longer build ffmpeg from source. Instead I rely on libav, so the install process is faster now. Both Python and Java work with VideoWriter using X264 as well. I also no longer include the version number in the path. If you have an older version of the scripts (uses 3.1.0) you need to uninstall OpenCV manually by:
+* `cd opencv-3.1.0/build`
+* `sudo make uninstall`
+* `cd`
+* `sudo rm -rf opencv-3.1.0`
 
 * [Platforms Supported](#platforms-supported)
 * [OpenCV versions](#opencv-versions)

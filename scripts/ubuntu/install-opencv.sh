@@ -56,7 +56,7 @@ log(){
 	echo "$timestamp $1" >> $logfile 2>&1
 }
 
-log "Installing OpenCV $opencvver on Ubuntu $ubuntuver $arch..."
+log "Installing OpenCV on Ubuntu $ubuntuver $arch..."
 
 # Remove temp dir
 log "Removing temp dir $tmpdir"
@@ -97,7 +97,7 @@ fi
 apt-get -y install libprotobuf-dev protobuf-compiler
 
 # Uninstall OpenCV if it exists
-opencvhome="$HOME/opencv-$opencvver"
+opencvhome="$HOME/opencv"
 if [ -d "$opencvhome" ]; then
 	log "Uninstalling OpenCV"
 	cd "$opencvhome/build"
@@ -113,7 +113,7 @@ log "Copying $tmpdir/opencv to $opencvhome"
 cp -r "$tmpdir/opencv" "$opencvhome"
 
 # Download OpenCV contrib source
-opencvcontribhome="$HOME/opencv_contrib-$opencvver"
+opencvcontribhome="$HOME/opencv_contrib"
 log "Removing $opencvcontribhome"
 rm -rf "$opencvcontribhome"
 # If installcontrib is True then install OpenCV's contrib package
